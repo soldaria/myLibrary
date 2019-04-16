@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Изменить</title>
+</head>
+<body>
+	<h2>Редактировать книгу</h2>
+	<form th:action="@{/update_book}" th:object="${book}" method="POST" enctype="multipart/form-data">
+         <input type="hidden" th:field="*{id}"/>
+         <table>
+	         <tr>
+	         <td>Название:</td>
+	         <td><input type="text" th:field="*{name}" style="width: 250px;"/></td>    
+	         </tr>
+	         <tr>
+	         <td>Автор:</td>
+	         <td><input type="text" th:field="*{author}" style="width: 250px;"/> </td>    
+	         </tr>
+	         <tr>
+	         <td>Жанр:</td>
+	         <td><input type="text" th:field="*{genre}" style="width: 250px;"/></td>    
+	         </tr>
+	         <tr>
+	         <td>Статус:</td>
+	         <td>
+	         <select th:field="*{status}">
+			    <option th:each="status : ${T(ru.sld.myLibrary.enums.BookStatus).values()}"
+			            th:value="${status}"
+			            th:text="${status.getTitle()}">
+			    </option>
+			 </select>
+			 </td>    
+	         </tr>	
+	         <tr>
+	         <td>Количество страниц:</td>
+	         <td><input type="text" th:field="*{sheetscnt}" style="width: 250px;"/></td>     
+	         </tr>	         
+	         <tr>
+	         <td>Изображение:</td>	         
+	         <td><br><img th:if="*{image != null}" th:src="@{'data:image/jpg;base64,' 
+              + *{T(org.springframework.util.Base64Utils).encodeToString(image)}}"
+              style="width: 250px; height: 400px;"/></td>
+	         </tr>
+	         <tr>
+	         <td></td>
+	         <td><input type="submit" value="Изменить" /></td>     
+	         </tr>
+         </table>
+	</form>
+</body>
+</html>

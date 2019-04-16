@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+  <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+<title>Библиотека</title>
+</head>
+<body>
+	<div class="sidebar" style="float:left;">
+		<h2>Добавить книгу</h2>
+		<form novalidate="novalidate" action="#" th:action="@{/add_book}" th:object="${book}" method="POST" enctype="multipart/form-data">
+	         <table>
+		         <tr>
+			         <td>Название:</td>
+			         <td><input type="text" th:field="*{name}" /></td>    
+		         </tr>
+		         <tr>
+			         <td>Автор:</td>
+			         <td><input type="text" th:field="*{author}" /> </td>    
+		         </tr>
+		         <tr>
+			         <td>Жанр:</td>
+			         <td><input type="text" th:field="*{genre}" /></td>    
+		         </tr>
+		         <tr>
+			         <td>Количество страниц:</td>
+			         <td><input type="text" th:field="*{sheetscnt}" /></td>     
+		         </tr>         
+		         <tr>
+		         <td></td>
+		         <td><input type="submit" value="Добавить" /></td>     
+		         </tr>
+	         </table>
+		</form>
+		<br>
+		<h2>Поиск</h2>
+		<form method="get" action="filter">
+	        <input type="text" name="filter" style="width: 260px;">
+	        <button type="submit"><img src="../images/search.png" width="20" height="20" alt="Найти"></button>
+	    </form>
+    </div>
+    <div class="content" style="display:inline;">
+		<div align = "center">			
+			<th:block  th:each="letter : ${T(ru.sld.myLibrary.enums.Alphabet).values()}">		    
+			    <div style = "display: inline-block;">
+				    <form method="get" action="filter">
+				    	<input  type="hidden" name="filter" th:value="${letter}"/>
+				    	<button>[[${letter}]]</button>
+				    </form>
+				</div>
+			</th:block>
+		</div>
+		<br>
+		<div align = "center">			
+			<th:block  th:each="letter : ${T(ru.sld.myLibrary.enums.AlphabetEn).values()}">		    
+			    <div style = "display: inline-block;">
+				    <form method="get" action="filter">
+				    	<input  type="hidden" name="filter" th:value="${letter}"/>
+				    	<button>[[${letter}]]</button>
+				    </form>
+				</div>
+			</th:block>
+		</div>
+		<br>
+		<h2 style = "margin:auto;text-align:center;">Добавленные книги</h2>	
+	    <ul>
+	      	<li th:each="eachBook : ${books}" style = "display: inline-block;width: 25%;"> 
+				<div class="border" th:style="${eachBook.status == T(ru.sld.myLibrary.enums.BookStatus).COMPLETE}  ? 'border: 1px solid #228B22' : 'border: 1px solid #4682B4'">					
+				  	<div class="wrap">
+				    	<div class="book-wrap">
+				     		<img height = "400px" th:if="${eachBook.image != null}" th:src="@{'data:image/jpg;base64,' 
+			              		+ *{T(org.springframework.util.Base64Utils).encodeToString(eachBook.image)}}"
+			          		/>
+				    	</div>	    
+				  	</div>
+				    <div class="book-info">	  
+				    	<th:block th:if= "${eachBook.image == null}"> 				    	
+					      	<form th:action="@{'/upload/' + ${eachBook.id}}" method="POST" enctype="multipart/form-data">				
+								<label for="image">Выбрать изображение:</label>
+								<input type="file" name="image" id="image" multiple></input>
+								<input type="submit" value="Загрузить" /> 		 	
+							</form>
+						</th:block> 
+						<span class="book-title">
+				      	<h3>[[${eachBook.name}]]</h3>
+				      	</span>
+				      	<h4>[[${eachBook.author}]]</h4>
+				      	<h4>[[${eachBook.genre}]]</h4>
+				      	<h4 th:style="${eachBook.status == T(ru.sld.myLibrary.enums.BookStatus).COMPLETE}  ? 'color: #228B22' : 'color: #4682B4'">
+				      		Статус : [[${eachBook.status.getTitle()}]]
+				      	</h4>
+				      	<span class="book-cnt">кол-во страниц : [[${eachBook.sheetscnt}]]</span><br>
+						<a th:href="@{'/edit_book/' + ${eachBook.id}}">Изменить</a>
+			          	<a th:href="@{'/delete_book/' + ${eachBook.id}}">Удалить</a>
+				   </div>
+				</div> 
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

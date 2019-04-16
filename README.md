@@ -1,5 +1,5 @@
 # myLibrary
-Пример приложения "Библиотека" на Spring Boot/H2/Flyway/Thymeleaf
+Пример приложения "Моя Библиотека" на Spring Boot/H2/Flyway/Thymeleaf. CRUD - операции + поиск.
 ## Главная страница
 ![boot_example](https://user-images.githubusercontent.com/48937761/56189228-a1855c80-6051-11e9-8604-e66aa69297b6.jpg)
 ## Страница редактирования
